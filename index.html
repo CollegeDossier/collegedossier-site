@@ -263,6 +263,19 @@ body { font-family: 'Outfit', sans-serif; background: var(--white); color: var(-
 </head>
 <body>
 
+
+<!-- THANK YOU OVERLAY (shows after Stripe payment) -->
+<div id="thankyou-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:var(--ink);overflow-y:auto;">
+  <div style="max-width:600px;margin:0 auto;padding:4rem 2rem;text-align:center;">
+    <div style="font-size:3rem;margin-bottom:1rem;">✓</div>
+    <h1 style="font-family:'DM Serif Display',serif;color:var(--white);font-size:2.2rem;margin-bottom:1rem;">Payment Received!</h1>
+    <p style="color:var(--fog);font-size:1.1rem;line-height:1.7;margin-bottom:2rem;">Thank you for your order. To get started on your College Brief, please send us an email with the school(s) you'd like researched and your student's details.</p>
+    <a href="mailto:info@collegedossierllc.com?subject=College%20Dossier%20Brief%20Request&body=Hi%20College%20Dossier%20team%2C%0A%0AI%20just%20completed%20my%20purchase%20and%20would%20like%20to%20request%20brief(s)%20for%20the%20following%20school(s)%3A%0A%0A1.%20%0A2.%20%0A3.%20%0A%0AStudent%20Name%3A%20%0ACurrent%20High%20School%3A%20%0AGrade%2FYear%3A%20%0AState%20of%20Residence%3A%20%0A%0AThank%20you!" class="btn-primary" style="display:inline-block;text-decoration:none;font-size:1.1rem;padding:1rem 2.5rem;">Send Your School Request →</a>
+    <p style="color:var(--fog);font-size:0.85rem;margin-top:2rem;">Or email us directly at <a href="mailto:info@collegedossierllc.com" style="color:var(--gold);">info@collegedossierllc.com</a></p>
+    <p style="margin-top:3rem;"><a href="/" style="color:var(--mist);font-size:0.85rem;text-decoration:none;">← Back to College Dossier</a></p>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header class="header">
   <div class="logo">College Dossier<span> LLC</span></div>
@@ -496,6 +509,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
   });
 });
+
+// Show thank-you overlay after Stripe payment
+if (window.location.search.includes('success=true')) {
+  document.getElementById('thankyou-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
 </script>
 </body>
 </html>
