@@ -529,11 +529,68 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// Show thank-you overlay after Stripe payment
+// Post-payment intake form
 if (window.location.search.includes('success=true')) {
-  document.getElementById('thankyou-overlay').style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  document.getElementById('intake-overlay').style.display = 'flex';
+}
+function closeIntake() {
+  document.getElementById('intake-overlay').style.display = 'none';
+  history.replaceState(null, '', window.location.pathname);
+}
+function submitIntake() {
+  const f = document.getElementById('intake-form');
+  const d = {
+    name: f.parentName.value,
+    email: f.parentEmail.value,
+    phone: f.parentPhone.value,
+    student: f.studentName.value,
+    school: f.highSchool.value,
+    grade: f.gradeLevel.value,
+    state: f.homeState.value,
+    schools: f.schoolList.value,
+    notes: f.notes.value
+  };
+  const subject = encodeURIComponent('College Dossier Brief Request - ' + d.name);
+  const body = encodeURIComponent(
+    'PARENT/GUARDIAN: ' + d.name +
+    '\nEMAIL: ' + d.email +
+    '\nPHONE: ' + d.phone +
+    '\n\nSTUDENT NAME: ' + d.student +
+    '\nHIGH SCHOOL: ' + d.school +
+    '\nGRADE: ' + d.grade +
+    '\nHOME STATE: ' + d.state +
+    '\n\nSCHOOLS REQUESTED:\n' + d.schools +
+    '\n\nADDITIONAL NOTES:\n' + d.notes
+  );
+  window.location.href = 'mailto:info@collegedossierllc.com?subject=' + subject + '&body=' + body;
+  setTimeout(closeIntake, 1000);
 }
 </script>
+
+<!-- INTAKE FORM OVERLAY -->
+<div id="intake-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(11,18,21,0.92);backdrop-filter:blur(10px);overflow-y:auto;padding:2rem;">
+<div style="max-width:560px;margin:2rem auto;background:#FAFCFD;border-radius:16px;padding:2.5rem;box-shadow:0 20px 60px rgba(0,0,0,0.4);position:relative;">
+<button onclick="closeIntake()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#6B7D87;">✕</button>
+<div style="text-align:center;margin-bottom:1.5rem;">
+<div style="font-size:2.5rem;margin-bottom:0.5rem;">✅</div>
+<div style="font-family:'DM Serif Display',serif;font-size:1.8rem;color:#0B1215;">Payment Received!</div>
+<p style="color:#6B7D87;font-size:0.9rem;margin-top:0.5rem;">Tell us about your student so we can start researching.</p>
+</div>
+<div id="intake-form">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+<div><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Parent/Guardian Name *</label><input name="parentName" required style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;" placeholder="Your full name"></div>
+<div><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Email *</label><input name="parentEmail" type="email" required style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;" placeholder="you@email.com"></div>
+<div><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Phone</label><input name="parentPhone" style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;" placeholder="(xxx) xxx-xxxx"></div>
+<div><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Student Name *</label><input name="studentName" required style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;" placeholder="Student first + last"></div>
+<div><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">High School</label><input name="highSchool" style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;" placeholder="Current high school"></div>
+<div><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Grade Level</label><select name="gradeLevel" style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;background:white;"><option value="">Select grade</option><option>Freshman (9th)</option><option>Sophomore (10th)</option><option>Junior (11th)</option><option>Senior (12th)</option></select></div>
+<div style="grid-column:span 2;"><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Home State *</label><input name="homeState" required style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;" placeholder="e.g. Florida"></div>
+</div>
+<div style="margin-top:0.75rem;"><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Schools You Want Briefs For *</label><textarea name="schoolList" rows="3" required style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;resize:vertical;" placeholder="List each school on a new line:&#10;University of Florida&#10;UCF&#10;Clemson"></textarea></div>
+<div style="margin-top:0.75rem;"><label style="font-size:0.75rem;font-weight:600;color:#6B7D87;display:block;margin-bottom:0.3rem;">Additional Notes</label><textarea name="notes" rows="2" style="width:100%;padding:0.6rem;border:1px solid #D4DEE3;border-radius:6px;font-size:0.9rem;resize:vertical;" placeholder="Anything else we should know (e.g. specific scholarships, in-state vs OOS, etc.)"></textarea></div>
+<button onclick="submitIntake()" style="display:block;width:100%;margin-top:1.25rem;padding:0.85rem;background:#D4A853;color:#0B1215;border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;letter-spacing:0.3px;">Submit Your School Request →</button>
+<p style="text-align:center;font-size:0.7rem;color:#9AACB4;margin-top:0.75rem;">Your briefs will be delivered within 48 hours to the email above.</p>
+</div></div></div>
+
 </body>
 </html>
