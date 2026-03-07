@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#D4A853">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="College Dossier">
+<link rel="apple-touch-icon" href="icon-192x192.png">
 <title>College Dossier LLC — Custom College Briefs for Smart Families</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -592,5 +598,13 @@ function submitIntake() {
 <p style="text-align:center;font-size:0.7rem;color:#9AACB4;margin-top:0.75rem;">Your briefs will be delivered within 48 hours to the email above.</p>
 </div></div></div>
 
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js');
+  });
+}
+</script>
 </body>
 </html>
